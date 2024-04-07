@@ -75,7 +75,6 @@ export const ListAllUsers = async (req, res) => {
 
 export const forgotPassword = async (req, res) => {
   try {
-    // Check the user Exits in DB
     let userExists = await User.findOne({ email: req.body.email });
     if (userExists && req.body.email !== "") {
       const tokenString = userExists.token;
@@ -95,8 +94,6 @@ export const forgotPassword = async (req, res) => {
 
       // update the DB with Token
       await User.updateOne({ email: req.body.email }, { token: tokenString });
-
-      // status send
       res.status(201).send({
         message: "Reset link sended to your mail-id",
       });
@@ -175,7 +172,6 @@ export const generateShortUrl = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
-// Define the route handler
 export const ClickShortUrl = async (req, res) => {
   try {
     const shortURL = await User.findOne({
@@ -197,8 +193,6 @@ export const ClickShortUrl = async (req, res) => {
     await shortURL.save();
 
     const longURL = urlObject.longUrl;
-    // console.log(longURL);
-    // Redirect the user to the long URL
     res.redirect(longURL);
   } catch (error) {
     console.error("Error handling short URL click:", error);
@@ -208,7 +202,6 @@ export const ClickShortUrl = async (req, res) => {
 
 export const AdminDashboard = async (req, res) => {
   try {
-    // console.log(req.user)
     const userId = req.user._id;
 
     // Fetch the user document of the logged-in user
@@ -220,7 +213,7 @@ export const AdminDashboard = async (req, res) => {
     }
 
     const allusers = await User.find();
-    res.status(200).json({ message: "Authorized User",data: allusers  }); //data: [user] 
+    res.status(200).json({ message: "Authorized User",data: allusers  }); 
   } catch (error) {
     console.log(error);
     res.status(500).json({ err: "Internal server Error " });
@@ -291,7 +284,6 @@ try {
       },
       {
         $sort: {
-          // "_id": 1,
           "count": 1 // Sorting URL counts in ascending order
         }
       }
