@@ -29,6 +29,6 @@ const userSchema = new mongoose.Schema({
     urls:[urlSchema]
 },{versionKey:false})
 
-const User = mongoose.model('User',userSchema)
+const User = mongoose.model('UrlUser',userSchema)
 
 export default User
